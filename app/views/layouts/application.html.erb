@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Ruby Project" %></title>
+    <title><%= content_for(:title) || "Aegis Draft" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Ruby Project">
+    <meta name="application-name" content="Aegis Draft">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -24,6 +24,24 @@
   </head>
 
   <body>
+    <header>
+      <nav aria-label="Основная навигация">
+        <%= link_to "Aegis Draft", root_path %>
+
+        <% if current_user %>
+          <%= link_to "Аккаунт", session_path %>
+          <%= button_to "Выйти", session_path, method: :delete %>
+        <% else %>
+          <%= link_to "Войти", new_session_path %>
+          <%= link_to "Регистрация", new_registration_path %>
+        <% end %>
+      </nav>
+    </header>
+
+    <% flash.each do |type, message| %>
+      <p role="<%= type == "alert" ? "alert" : "status" %>"><%= message %></p>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>

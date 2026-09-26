@@ -18,5 +18,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "h1", "Aegis Draft"
     assert_select "p", text: /#{Regexp.escape(users(:one).email)}/
+    assert_select "nav a[href=?]", session_path, text: "Аккаунт"
+    assert_select "nav form[action=?]", session_path
   end
 end
