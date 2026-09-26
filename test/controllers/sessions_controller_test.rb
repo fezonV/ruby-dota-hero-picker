@@ -15,7 +15,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
       password: "password"
     }
 
-    assert_redirected_to session_path
+    assert_redirected_to root_path
 
     get session_path
     assert_response :success

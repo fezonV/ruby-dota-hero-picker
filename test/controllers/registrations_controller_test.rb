@@ -9,11 +9,10 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_select "form[action=?]", registration_path
   end
 
-  test "shows the registration form on the root page" do
+  test "redirects unauthenticated users from the root page" do
     get root_path
 
-    assert_response :success
-    assert_select "input[name=?]", "user[email]"
+    assert_redirected_to new_session_path
   end
 
   test "creates a user with valid data" do

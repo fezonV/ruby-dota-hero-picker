@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root "registrations#new"
+  root "home#index"
 
   resource :registration, only: %i[new create]
   get "registration/created", to: "registrations#created", as: :registration_created

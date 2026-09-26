@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
     if user
       reset_session
       session[:user_id] = user.id
-      redirect_to session_path
+      redirect_to root_path
     else
       flash.now[:alert] = "Неверный email или пароль"
       render :new, status: :unprocessable_entity
