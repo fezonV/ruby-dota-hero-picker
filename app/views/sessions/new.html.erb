@@ -3,6 +3,10 @@
 <main>
   <h1>Войти в аккаунт</h1>
 
+  <% if flash[:notice] %>
+    <p role="status"><%= flash[:notice] %></p>
+  <% end %>
+
   <% if flash[:alert] %>
     <p role="alert"><%= flash[:alert] %></p>
   <% end %>

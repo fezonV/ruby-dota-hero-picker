@@ -37,4 +37,20 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to new_session_path
   end
+
+  test "logs out the current user" do
+    post session_path, params: {
+      email: users(:one).email,
+      password: "password"
+    }
+
+    delete session_path
+
+    assert_redirected_to new_session_path
+    follow_redirect!
+    assert_select "[role=status]", "Вы вышли из аккаунта"
+
+    get session_path
+    assert_redirected_to new_session_path
+  end
 end

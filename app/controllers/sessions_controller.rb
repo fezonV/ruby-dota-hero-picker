@@ -19,4 +19,9 @@ class SessionsController < ApplicationController
 
   def show
   end
+
+  def destroy
+    reset_session
+    redirect_to new_session_path, notice: "Вы вышли из аккаунта"
+  end
 end

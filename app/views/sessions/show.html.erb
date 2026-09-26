@@ -3,4 +3,5 @@
 <main>
   <h1>Вы вошли в аккаунт</h1>
   <p><%= current_user.email %></p>
+  <%= button_to "Выйти", session_path, method: :delete %>
 </main>
