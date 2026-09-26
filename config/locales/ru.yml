@@ -1,0 +1,19 @@
+ru:
+  activerecord:
+    attributes:
+      user:
+        email: "Email"
+        password: "Пароль"
+        password_confirmation: "Подтверждение пароля"
+    errors:
+      models:
+        user:
+          attributes:
+            password_confirmation:
+              confirmation: "не совпадает с паролем"
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      blank: "не может быть пустым"
+      invalid: "имеет неверный формат"
+      taken: "уже используется"

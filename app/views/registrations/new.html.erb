@@ -1,0 +1,36 @@
+<% content_for :title, "Регистрация — Aegis Draft" %>
+
+<main>
+  <h1>Создать аккаунт</h1>
+  <p>Зарегистрируйтесь, чтобы пользоваться советником по драфтам.</p>
+
+  <% if @user.errors.any? %>
+    <div role="alert">
+      <h2>Не удалось создать аккаунт</h2>
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: @user, url: registration_path do |form| %>
+    <div>
+      <%= form.label :email, "Email" %>
+      <%= form.email_field :email, required: true, autofocus: true, autocomplete: "email" %>
+    </div>
+
+    <div>
+      <%= form.label :password, "Пароль" %>
+      <%= form.password_field :password, required: true, autocomplete: "new-password" %>
+    </div>
+
+    <div>
+      <%= form.label :password_confirmation, "Повторите пароль" %>
+      <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password" %>
+    </div>
+
+    <%= form.submit "Зарегистрироваться" %>
+  <% end %>
+</main>

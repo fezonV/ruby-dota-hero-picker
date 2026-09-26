@@ -11,14 +11,14 @@ class UserTest < ActiveSupport::TestCase
     user = User.new(password: "password")
 
     assert_not user.valid?
-    assert_includes user.errors[:email], "can't be blank"
+    assert user.errors.of_kind?(:email, :blank)
   end
 
   test "requires a valid email" do
     user = User.new(email: "invalid-email", password: "password")
 
     assert_not user.valid?
-    assert_includes user.errors[:email], "is invalid"
+    assert user.errors.of_kind?(:email, :invalid)
   end
 
   test "normalizes email" do
@@ -31,7 +31,7 @@ class UserTest < ActiveSupport::TestCase
     user = User.new(email: users(:one).email.upcase, password: "password")
 
     assert_not user.valid?
-    assert_includes user.errors[:email], "has already been taken"
+    assert user.errors.of_kind?(:email, :taken)
   end
 
   test "authenticates with the correct password" do
