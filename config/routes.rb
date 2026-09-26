@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   resource :registration, only: %i[new create]
   get "registration/created", to: "registrations#created", as: :registration_created
+  resource :session, only: %i[new create show]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

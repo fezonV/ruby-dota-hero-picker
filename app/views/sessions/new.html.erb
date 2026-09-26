@@ -1,0 +1,25 @@
+<% content_for :title, "Вход — Aegis Draft" %>
+
+<main>
+  <h1>Войти в аккаунт</h1>
+
+  <% if flash[:alert] %>
+    <p role="alert"><%= flash[:alert] %></p>
+  <% end %>
+
+  <%= form_with url: session_path do |form| %>
+    <div>
+      <%= form.label :email, "Email" %>
+      <%= form.email_field :email, required: true, autofocus: true, autocomplete: "email" %>
+    </div>
+
+    <div>
+      <%= form.label :password, "Пароль" %>
+      <%= form.password_field :password, required: true, autocomplete: "current-password" %>
+    </div>
+
+    <%= form.submit "Войти" %>
+  <% end %>
+
+  <p><%= link_to "Создать аккаунт", new_registration_path %></p>
+</main>
