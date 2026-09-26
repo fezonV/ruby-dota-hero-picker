@@ -2,7 +2,7 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   test "is valid with an email and password" do
-    user = User.new(email: "new-player@example.com", password: "password")
+    user = User.new(email: "new-player@example.com", password: "password", password_confirmation: "password")
 
     assert user.valid?
   end
@@ -22,7 +22,11 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "normalizes email" do
-    user = User.create!(email: "  NEW-PLAYER@Example.COM ", password: "password")
+    user = User.create!(
+      email: "  NEW-PLAYER@Example.COM ",
+      password: "password",
+      password_confirmation: "password"
+    )
 
     assert_equal "new-player@example.com", user.email
   end
@@ -35,9 +39,16 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "authenticates with the correct password" do
-    user = User.create!(email: "secure@example.com", password: "secret")
+    user = User.create!(email: "secure@example.com", password: "secret", password_confirmation: "secret")
 
     assert user.authenticate("secret")
     assert_not user.authenticate("incorrect")
+  end
+
+  test "requires password confirmation when it is missing" do
+    user = User.new(email: "confirmation@example.com", password: "password")
+
+    assert_not user.valid?
+    assert user.errors.of_kind?(:password_confirmation, :blank)
   end
 end

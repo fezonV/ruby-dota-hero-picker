@@ -47,4 +47,18 @@ class RegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
     assert_select "div[role=alert]"
   end
+
+  test "requires password confirmation" do
+    assert_no_difference("User.count") do
+      post registration_path, params: {
+        user: {
+          email: "without-confirmation@example.com",
+          password: "password"
+        }
+      }
+    end
+
+    assert_response :unprocessable_entity
+    assert_select "div[role=alert]", text: /Подтверждение пароля/
+  end
 end

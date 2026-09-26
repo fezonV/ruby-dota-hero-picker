@@ -5,7 +5,8 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.authenticate_by(email: params[:email], password: params[:password])
+    @email = params[:email].to_s.strip.downcase
+    user = User.authenticate_by(email: @email, password: params[:password].to_s)
 
     if user
       reset_session

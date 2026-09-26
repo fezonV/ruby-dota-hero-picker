@@ -30,6 +30,17 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
     assert_select "[role=alert]", "Неверный email или пароль"
+    assert_select "input[name=email][value=?]", users(:one).email
+    assert_select "input[name=password]:not([value])"
+  end
+
+  test "normalizes email before login" do
+    post session_path, params: {
+      email: "  #{users(:one).email.upcase}  ",
+      password: "password"
+    }
+
+    assert_redirected_to root_path
   end
 
   test "requires authentication to show the account" do
