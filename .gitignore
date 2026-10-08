@@ -39,6 +39,7 @@
 /spec/examples.txt
 /test/tmp/
 /test/version_tmp/
+/design/design-notes.md
 /.yardoc/
 /_yardoc/
 /doc/

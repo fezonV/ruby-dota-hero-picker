@@ -23,8 +23,8 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <header>
+  <body class="<%= content_for(:body_class) %>">
+    <header class="site-header">
       <nav aria-label="Основная навигация">
         <%= link_to "Aegis Draft", root_path %>
 
