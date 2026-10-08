@@ -6,9 +6,19 @@ class SessionsController < ApplicationController
 
   def create
     @email = params[:email].to_s.strip.downcase
-    user = User.authenticate_by(email: @email, password: params[:password].to_s)
+    unless @email.match?(User::EMAIL_FORMAT)
+      flash.now[:alert] = "Введите корректный email"
+      return render :new, status: :unprocessable_entity
+    end
 
-    if user
+    user = User.find_by(email: @email)
+
+    unless user
+      flash.now[:alert] = "Почта не зарегистрирована"
+      return render :new, status: :unprocessable_entity
+    end
+
+    if user.authenticate(params[:password].to_s)
       reset_session
       session[:user_id] = user.id
       redirect_to root_path
