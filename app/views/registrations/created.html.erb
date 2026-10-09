@@ -1,7 +1,12 @@
 <% content_for :title, "Аккаунт создан — Aegis Draft" %>
-
-<main>
-  <h1>Аккаунт создан</h1>
-  <p>Регистрация прошла успешно.</p>
-  <p><%= link_to "Войти", new_session_path %></p>
+<main class="auth-layout">
+  <section class="form-region" aria-labelledby="form-title">
+    <div class="form-wrap">
+      <%= render "shared/flash" %>
+      <span class="status-badge">Всё готово</span>
+      <h1 id="form-title">Аккаунт создан</h1>
+      <p class="form-intro">Регистрация прошла успешно. Войди в свой аккаунт, чтобы продолжить.</p>
+      <%= link_to new_session_path, class: "primary" do %>Войти <%= render "shared/arrow" %><% end %>
+    </div>
+  </section>
 </main>

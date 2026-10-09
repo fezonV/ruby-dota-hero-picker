@@ -1,0 +1,3 @@
+<% flash.each do |type, message| %>
+  <div class="feedback <%= type == "alert" ? "feedback-error" : "feedback-success" %>" role="<%= type == "alert" ? "alert" : "status" %>"><%= message %></div>
+<% end %>

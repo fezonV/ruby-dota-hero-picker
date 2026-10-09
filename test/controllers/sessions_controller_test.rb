@@ -5,7 +5,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     get new_session_path
 
     assert_response :success
-    assert_select "h1", "Войти в аккаунт"
+    assert_select "h1", "Вход в аккаунт"
     assert_select "form[action=?]", session_path
     assert_select "nav a[href=?]", new_registration_path, text: "Регистрация"
   end

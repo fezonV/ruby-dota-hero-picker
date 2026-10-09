@@ -5,6 +5,7 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     get root_path
 
     assert_redirected_to new_session_path
+    assert_nil flash[:alert]
   end
 
   test "shows the home page to an authenticated user" do

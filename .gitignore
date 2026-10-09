@@ -54,5 +54,11 @@
 build/
 *.bridgesupport
 
+# Local design exploration artifacts.
+/DESIGN.md
+/PRODUCT.md
+/public/design-lab/
+.DS_Store
+
 # Ignore key files for decrypting credentials and more.
 /config/*.key

@@ -1,47 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
   <head>
     <title><%= content_for(:title) || "Aegis Draft" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Aegis Draft">
-    <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= yield :head %>
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <link rel="icon" href="/brand/aegis-valve.png" type="image/png">
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
-  <body class="<%= content_for(:body_class) %>">
-    <header class="site-header">
-      <nav aria-label="Основная навигация">
-        <%= link_to "Aegis Draft", root_path %>
-
-        <% if current_user %>
-          <%= link_to "Аккаунт", session_path %>
-          <%= button_to "Выйти", session_path, method: :delete %>
-        <% else %>
-          <%= link_to "Войти", new_session_path %>
-          <%= link_to "Регистрация", new_registration_path %>
+  <body>
+    <div class="site" data-controller="glyph-mark" data-action="turbo:before-cache@document->glyph-mark#beforeCache">
+      <canvas class="page-ascii-background" data-glyph-mark-target="canvas" aria-hidden="true"></canvas>
+      <header class="site-header">
+        <%= link_to root_path, class: "brand", aria: { label: "Aegis Draft — на главную" } do %>
+          <img class="mark" src="/brand/aegis-valve.png" width="88" height="64" alt="" aria-hidden="true">
+          <span>Aegis Draft</span>
         <% end %>
-      </nav>
-    </header>
-
-    <% flash.each do |type, message| %>
-      <p role="<%= type == "alert" ? "alert" : "status" %>"><%= message %></p>
-    <% end %>
-
-    <%= yield %>
+        <nav class="header-link" aria-label="Основная навигация">
+          <% if current_user %>
+            <%= link_to "Аккаунт", session_path %>
+            <%= button_to "Выйти", session_path, method: :delete, class: "nav-button" %>
+          <% elsif controller_name == "sessions" && %w[new create].include?(action_name) %>
+            <span>Ещё нет аккаунта?</span>
+            <%= link_to new_registration_path do %>Регистрация <%= render "shared/arrow" %><% end %>
+          <% else %>
+            <%= link_to new_session_path do %>Войти <%= render "shared/arrow" %><% end %>
+          <% end %>
+        </nav>
+      </header>
+      <%= yield %>
+      <footer class="site-footer">
+        <span>Aegis Draft · Советник по драфтам Dota 2</span>
+      </footer>
+    </div>
   </body>
 </html>

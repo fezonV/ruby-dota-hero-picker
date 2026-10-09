@@ -1,7 +1,16 @@
 <% content_for :title, "Aegis Draft" %>
-
-<main>
-  <h1>Aegis Draft</h1>
-  <p>Добро пожаловать, <%= current_user.email %>.</p>
-  <p>Советник по выбору героев появится в следующей итерации.</p>
+<main class="auth-layout">
+  <section class="form-region" aria-labelledby="form-title">
+    <div class="form-wrap home-wrap">
+      <%= render "shared/flash" %>
+      <span class="status-badge">Твой следующий ход</span>
+      <h1 id="form-title">Aegis Draft</h1>
+      <p class="account-email">Добро пожаловать, <%= current_user.email %>.</p>
+      <div class="empty-state">
+        <h2>Готовимся к следующему драфту.</h2>
+        <p>Здесь появится подбор героев для твоей команды.</p>
+      </div>
+      <%= link_to "Открыть аккаунт", session_path, class: "text-link" %>
+    </div>
+  </section>
 </main>
