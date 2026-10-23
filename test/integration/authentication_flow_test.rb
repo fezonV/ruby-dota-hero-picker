@@ -33,10 +33,18 @@ class AuthenticationFlowTest < ActionDispatch::IntegrationTest
     assert_select "h1", "Aegis Draft"
     assert_select "p", text: /journey@example.com/
 
+    # A second request uses the same session, as a browser refresh does.
+    get session_path
+    assert_response :success
+    assert_select "p", "journey@example.com"
+
     delete session_path
     assert_redirected_to new_session_path
 
     get root_path
+    assert_redirected_to new_session_path
+
+    get session_path
     assert_redirected_to new_session_path
   end
 end

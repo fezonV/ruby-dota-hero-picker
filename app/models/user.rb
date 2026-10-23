@@ -2,6 +2,7 @@ class User < ApplicationRecord
   EMAIL_FORMAT = /\A[^\s@]+@[^\s@]+\z/
 
   has_secure_password
+  has_many :drafts, dependent: :destroy
 
   normalizes :email, with: ->(email) { email.strip.downcase }
 

@@ -1,0 +1,68 @@
+<% content_for :title, "UI Kit — Aegis Draft" %>
+<main class="kit-layout" data-controller="ui-kit">
+  <header class="kit-heading">
+    <div><h1>UI Kit</h1><p>Компоненты Aegis Draft. Один язык для каждого экрана.</p></div>
+    <%= link_to "На главную", root_path, class: "secondary" %>
+  </header>
+  <p class="feedback kit-disclaimer">Образцы интерфейса. Выбор героя здесь демонстрационный и не сохраняется. Этот экран не подключён к моделям драфта и подбору рекомендаций.</p>
+  <nav class="kit-nav" aria-label="Разделы UI Kit">
+    <a href="#foundations">Основа</a><a href="#controls">Управление</a><a href="#draft">Драфт</a><a href="#states">Состояния</a>
+  </nav>
+
+  <section class="kit-section" id="foundations" aria-labelledby="foundations-title">
+    <div class="kit-section-heading"><h2 id="foundations-title">Визуальная основа</h2><p>Manrope · скругление 7 px · голубой акцент</p></div>
+    <div class="swatches">
+      <% { "bg" => ["Фон", "#0d1014"], "input" => ["Поверхность", "#171d25"], "accent" => ["Акцент", "#00d5ff"], "ink" => ["Текст", "#edf8ff"], "muted" => ["Вторичный", "#a1b3c4"], "danger" => ["Ошибка", "#ffb4ba"] }.each do |token, (label, value)| %>
+        <div class="swatch"><div class="swatch-color swatch-<%= token %>"></div><strong><%= label %></strong><code><%= value %></code></div>
+      <% end %>
+    </div>
+    <div class="type-sample"><h3>Твой следующий ход</h3><p>Выбирай состав. Сохраняй преимущество.</p><span class="component-meta">Образец типографики будущего редактора</span></div>
+  </section>
+
+  <section class="kit-section" id="controls" aria-labelledby="controls-title">
+    <div class="kit-section-heading"><h2 id="controls-title">Кнопки и поля</h2><p>Общие стили с настоящими формами входа и регистрации</p></div>
+    <div class="kit-columns">
+      <div class="kit-stack"><h3>Действия</h3>
+        <%= link_to new_registration_path, class: "primary" do %>Создать аккаунт <%= render "shared/arrow" %><% end %>
+        <%= link_to "Открыть аккаунт", session_path, class: "secondary" %>
+        <button class="primary" type="button" disabled>Недоступно</button>
+        <button class="secondary" type="button" disabled aria-busy="true">Сохранение…</button>
+      </div>
+      <div><h3>Ввод данных</h3>
+        <div class="form-field"><label for="kit-email">Email</label><input id="kit-email" type="email" placeholder="you@example.com" autocomplete="off"></div>
+        <div class="form-field"><label for="kit-invalid">Email с ошибкой</label><input id="kit-invalid" type="email" value="example" aria-invalid="true" aria-describedby="kit-email-error"><p class="field-hint field-error" id="kit-email-error">Введите адрес в формате name@example.com.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="kit-section" id="draft" aria-labelledby="draft-title">
+    <div class="kit-section-heading"><h2 id="draft-title">Элементы драфта</h2><p>Интерактивный образец: найди героя и выбери его</p></div>
+    <div class="kit-columns kit-draft">
+      <div><div class="form-field"><label for="kit-search">Поиск по имени или роли</label><input id="kit-search" type="search" placeholder="Например, Crystal Maiden" data-action="input->ui-kit#filter" data-ui-kit-target="search"></div>
+        <div class="hero-list">
+          <%= render "shared/ui/hero", name: "Crystal Maiden", role: "Поддержка" %>
+          <%= render "shared/ui/hero", name: "Axe", role: "Инициация" %>
+          <%= render "shared/ui/hero", name: "Juggernaut", role: "Основной урон" %>
+        </div>
+        <p class="component-meta" data-ui-kit-target="noResults" hidden>Ничего не найдено. Попробуй другое имя или роль.</p>
+        <p class="field-hint" role="status" data-ui-kit-target="selection">Герой ещё не выбран.</p>
+      </div>
+      <div><h3>Союзная команда <span class="component-meta">2 / 5 · пример</span></h3>
+        <ol class="team-slots">
+          <%= render "shared/ui/slot", position: 1, name: "Juggernaut", role: "Основной урон" %>
+          <%= render "shared/ui/slot", position: 2, name: "Axe", role: "Инициация" %>
+          <% (3..5).each do |position| %><%= render "shared/ui/slot", position: position, name: "Свободное место", role: "Выбери героя" %><% end %>
+        </ol>
+      </div>
+    </div>
+    <div class="recommendation-sample"><span class="status-badge">Пример рекомендации</span><h3>Crystal Maiden</h3><p>Поддержка и контроль для команды. Это образец объяснения, а не результат расчёта.</p><button type="button" class="secondary" data-action="ui-kit#recommend">Выбрать в образце</button></div>
+  </section>
+
+  <section class="kit-section" id="states" aria-labelledby="states-title">
+    <div class="kit-section-heading"><h2 id="states-title">Состояния интерфейса</h2><p>Пустой экран, подтверждение и понятная ошибка</p></div>
+    <div class="kit-columns">
+      <div class="empty-state"><h3>Пока нет драфтов</h3><p>Здесь появятся сохранённые составы. Образец будущего пустого состояния.</p></div>
+      <div><div class="feedback feedback-success">Образец: состав сохранён.</div><div class="feedback feedback-error">Образец: не удалось сохранить состав. Попробуй ещё раз.</div></div>
+    </div>
+  </section>
+</main>

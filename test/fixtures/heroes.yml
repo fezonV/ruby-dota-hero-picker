@@ -1,0 +1,28 @@
+maiden:
+  name: Crystal Maiden
+  role: Поддержка
+  support: 3
+  control: 3
+  damage: 1
+  durability: 0
+axe:
+  name: Axe
+  role: Инициация
+  support: 0
+  control: 2
+  damage: 1
+  durability: 3
+juggernaut:
+  name: Juggernaut
+  role: Основной урон
+  support: 0
+  control: 0
+  damage: 3
+  durability: 1
+lina:
+  name: Lina
+  role: Урон и контроль
+  support: 0
+  control: 2
+  damage: 3
+  durability: 0
