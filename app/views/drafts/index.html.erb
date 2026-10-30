@@ -1,0 +1,25 @@
+<% content_for :title, "Мои драфты — Aegis Draft" %>
+<main class="draft-layout">
+  <%= render "shared/flash" %>
+  <div class="draft-heading">
+    <div><h1>Мои драфты</h1><p>Твои составы. Каждое изменение сохраняется сразу.</p></div>
+    <%= link_to "Создать драфт", new_draft_path, class: "primary" %>
+  </div>
+  <% if @drafts.empty? %>
+    <div class="empty-state">
+      <h2>Пока нет драфтов</h2>
+      <p>Создай первый драфт, выбери героев и получи объяснимые рекомендации.</p>
+    </div>
+  <% else %>
+    <ul class="draft-list">
+      <% @drafts.each do |draft| %>
+        <li><%= link_to draft_path(draft), class: "draft-list-link" do %>
+          <strong><%= draft.title %></strong>
+          <span>Моя команда: <%= draft.draft_picks.count { |pick| pick.team == "ally" } %> / 5 · Противники: <%= draft.draft_picks.count { |pick| pick.team == "enemy" } %> / 5</span>
+          <span class="text-link">Открыть драфт</span>
+        <% end %></li>
+      <% end %>
+    </ul>
+  <% end %>
+  <%= link_to "На главную", root_path, class: "text-link" %>
+</main>

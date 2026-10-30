@@ -1,0 +1,6 @@
+<% if (portrait_path = hero_portrait_path(name)) %>
+  <%= image_tag portrait_path, class: "hero-portrait", width: 256, height: 144,
+    alt: "", aria: { hidden: true }, decoding: "async" %>
+<% else %>
+  <span class="hero-portrait hero-portrait-placeholder" aria-hidden="true"><%= name.first %></span>
+<% end %>

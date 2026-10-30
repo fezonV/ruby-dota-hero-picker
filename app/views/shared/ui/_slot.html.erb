@@ -1,1 +1,10 @@
-<li class="team-slot"><span class="slot-number"><%= position %></span><span><strong><%= name %></strong><span class="component-meta"><%= role %></span></span></li>
+<li class="team-slot">
+  <span class="slot-number"><%= position %></span>
+  <% if hero_portrait_path(name) %><%= render "shared/ui/hero_portrait", name: name %><% end %>
+  <span class="hero-name"><strong><%= name %></strong><span class="component-meta"><%= role %></span></span>
+  <% if local_assigns[:pick] %>
+    <%= button_to "Удалить", draft_draft_pick_path(pick.draft_id, pick), method: :delete,
+      params: { catalog_team: selected_team }, class: "remove-pick",
+      aria: { label: "Удалить #{name}" } %>
+  <% end %>
+</li>

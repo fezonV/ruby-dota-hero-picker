@@ -5,8 +5,27 @@ ru:
         email: "Email"
         password: "Пароль"
         password_confirmation: "Подтверждение пароля"
+      draft:
+        title: "Название"
+      draft_pick:
+        hero: "Герой"
+        hero_id: "Герой"
+        team: "Сторона"
+        position: "Место"
     errors:
       models:
+        draft:
+          attributes:
+            title:
+              too_long: "должно быть не длиннее 100 символов"
+        draft_pick:
+          attributes:
+            hero:
+              required: "не найден. Выберите героя из каталога."
+            hero_id:
+              taken: "уже выбран в этом драфте. Выберите другого."
+            team:
+              inclusion: "должна быть «Моя команда» или «Противники»."
         user:
           attributes:
             password_confirmation:

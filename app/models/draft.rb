@@ -6,6 +6,22 @@ class Draft < ApplicationRecord
   normalizes :title, with: ->(title) { title.strip }
   validates :title, presence: true, length: { maximum: 100 }
 
+  # Lock the draft so two requests cannot take the same free position.
+  def add_pick(attributes)
+    with_lock do
+      pick = draft_picks.build(attributes)
+      occupied = draft_picks.where(team: pick.team).pluck(:position)
+      pick.position = ((1..5).to_a - occupied).first
+
+      if pick.position.nil?
+        pick.errors.add(:base, "В этой команде уже пять героев. Сначала удалите одного.")
+      else
+        pick.save
+      end
+      pick
+    end
+  end
+
   # Educational feature ratings, not match statistics or win probabilities.
   # Missing allied features receive priority; enemy durability adds value to damage.
   def recommendations(limit: 5)

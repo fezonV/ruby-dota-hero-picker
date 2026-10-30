@@ -1,3 +1,6 @@
 one:
   user: one
   title: Первый драфт
+other:
+  user: two
+  title: Чужой драфт

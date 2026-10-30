@@ -29,10 +29,10 @@ class DraftTest < ActiveSupport::TestCase
 
   test "excludes all selected heroes and uses enemy composition" do
     draft = drafts(:one)
-    initial = draft.recommendations.find { |item| item[:hero] == heroes(:lina) }[:score]
+    initial = draft.recommendations(limit: Hero.count).find { |item| item[:hero] == heroes(:lina) }[:score]
     draft.draft_picks.create!(hero: heroes(:axe), team: "enemy", position: 1)
     draft.draft_picks.create!(hero: heroes(:juggernaut), team: "enemy", position: 2)
-    results = draft.recommendations
+    results = draft.recommendations(limit: Hero.count)
     assert_not_includes results.map { |item| item[:hero] }, heroes(:axe)
     assert_not_includes results.map { |item| item[:hero] }, heroes(:juggernaut)
     lina = results.find { |item| item[:hero] == heroes(:lina) }

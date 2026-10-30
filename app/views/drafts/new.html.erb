@@ -1,0 +1,25 @@
+<% content_for :title, "Создать драфт — Aegis Draft" %>
+<main class="auth-layout">
+  <section class="form-region" aria-labelledby="form-title">
+    <div class="form-wrap draft-form">
+      <h1 id="form-title">Новый драфт</h1>
+      <p class="form-intro">Дай составу название, чтобы легко найти его позже.</p>
+      <% if @draft.errors.any? %>
+        <div class="feedback feedback-error" id="draft-errors" role="alert">
+          <h2>Проверь название</h2>
+          <ul><% @draft.errors.full_messages.each do |message| %><li><%= message %></li><% end %></ul>
+        </div>
+      <% end %>
+      <%= form_with model: @draft do |form| %>
+        <div class="form-field">
+          <%= form.label :title, "Название драфта" %>
+          <%= form.text_field :title, maxlength: 100, required: true, placeholder: "Например, Вечерний состав",
+            aria: { invalid: @draft.errors.any?, describedby: "title-hint #{@draft.errors.any? ? 'draft-errors' : ''}" } %>
+          <p class="field-hint" id="title-hint">От 1 до 100 символов.</p>
+        </div>
+        <%= form.submit "Создать драфт", class: "primary" %>
+      <% end %>
+      <p class="form-bottom"><%= link_to "Мои драфты", drafts_path, class: "text-link" %></p>
+    </div>
+  </section>
+</main>

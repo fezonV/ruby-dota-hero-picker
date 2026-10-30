@@ -7,10 +7,11 @@
       <h1 id="form-title">Aegis Draft</h1>
       <p class="account-email">Добро пожаловать, <%= current_user.email %>.</p>
       <div class="empty-state">
-        <h2>Готовимся к следующему драфту.</h2>
-        <p>Здесь появится подбор героев для твоей команды.</p>
+        <h2>Собери свою команду.</h2>
+        <p>Выбирай союзников и противников, сравнивай учебные рекомендации и сохраняй составы.</p>
       </div>
-      <%= link_to "Открыть UI Kit", ui_kit_path, class: "primary" %>
+      <%= link_to "Мои драфты", drafts_path, class: "primary" %>
+      <p class="form-bottom"><%= link_to "Открыть UI Kit", ui_kit_path, class: "text-link" %></p>
       <p class="form-bottom"><%= link_to "Открыть аккаунт", session_path, class: "text-link" %></p>
     </div>
   </section>

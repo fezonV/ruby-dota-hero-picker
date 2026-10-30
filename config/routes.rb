@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   resource :session, only: %i[new create show destroy]
   get "ui-kit", to: "ui_kit#show", as: :ui_kit
 
+  resources :drafts, only: %i[index new create show] do
+    resources :draft_picks, only: %i[create destroy]
+  end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

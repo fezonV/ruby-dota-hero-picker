@@ -1,0 +1,100 @@
+<% content_for :title, "#{@draft.title} — Aegis Draft" %>
+<main class="draft-layout">
+  <%= link_to "Мои драфты", drafts_path, class: "text-link" %>
+  <div class="draft-heading editor-heading">
+    <div><h1><%= @draft.title %></h1><p>Выбери сторону и добавь героя в первое свободное место.</p></div>
+    <span class="component-meta">Состав сохраняется после каждого действия</span>
+  </div>
+  <%= render "shared/flash" %>
+  <% if @pick&.errors&.any? %>
+    <div class="feedback feedback-error" role="alert">
+      <h2>Не удалось добавить героя</h2>
+      <ul><% @pick.errors.full_messages.each do |message| %><li><%= message %></li><% end %></ul>
+    </div>
+  <% end %>
+
+  <nav class="draft-nav" aria-label="Разделы драфта">
+    <a href="#teams">Команды</a>
+    <a href="#catalogue">Каталог героев</a>
+    <a href="#recommendations">Рекомендации</a>
+  </nav>
+  <div class="draft-teams" id="teams">
+    <% { "ally" => "Моя команда", "enemy" => "Противники" }.each do |team, label| %>
+      <% team_picks = @picks.select { |pick| pick.team == team } %>
+      <section id="team-<%= team %>" aria-labelledby="<%= team %>-title">
+        <div class="draft-section-heading"><h2 id="<%= team %>-title"><%= label %></h2><span class="team-count"><%= team_picks.size %> / 5</span></div>
+        <ol class="team-slots">
+          <% (1..5).each do |position| %>
+            <% pick = team_picks.find { |item| item.position == position } %>
+            <%= render "shared/ui/slot", position: position, name: pick ? pick.hero.name : "Свободное место",
+              role: pick ? pick.hero.role : "Выбери героя из каталога", pick: pick, selected_team: @selected_team %>
+          <% end %>
+        </ol>
+      </section>
+    <% end %>
+  </div>
+
+  <div class="draft-workspace">
+    <section id="catalogue" aria-labelledby="catalogue-title" data-controller="hero-search">
+      <div class="draft-section-heading"><h2 id="catalogue-title">Каталог героев</h2><span class="component-meta">Учебный набор · <%= @heroes.size %> героев</span></div>
+      <nav class="team-switch" aria-label="Сторона для выбора героя">
+        <%= link_to "Моя команда", draft_path(@draft, team: "ally"), aria: { current: @selected_team == "ally" ? "true" : nil } %>
+        <%= link_to "Противники", draft_path(@draft, team: "enemy"), aria: { current: @selected_team == "enemy" ? "true" : nil } %>
+      </nav>
+      <p class="field-hint">Добавляем в: <strong><%= @selected_team == "ally" ? "мою команду" : "команду противников" %></strong>.</p>
+      <div class="form-field catalogue-search">
+        <label for="hero-search">Поиск по имени или роли</label>
+        <input id="hero-search" type="search" placeholder="Например, Lina или поддержка" data-hero-search-target="search" data-action="input->hero-search#filter" aria-controls="hero-list">
+      </div>
+      <% if @heroes.empty? %>
+        <div class="empty-state"><h3>Каталог пока пуст</h3><p>Учебные герои ещё не загружены. Попробуй открыть драфт позже.</p></div>
+      <% else %>
+        <% team_full = @picks.count { |pick| pick.team == @selected_team } == 5 %>
+        <% if team_full %><p class="feedback" role="status">На выбранной стороне уже пять героев. Удали одного или выбери другую сторону.</p><% end %>
+        <div class="hero-list" id="hero-list">
+          <% @heroes.each do |hero| %>
+            <% selected = @picks.any? { |pick| pick.hero_id == hero.id } %>
+            <%= form_with url: draft_draft_picks_path(@draft), scope: :draft_pick,
+              html: { class: "catalogue-entry", data: { hero_search_target: "hero", name: hero.name, role: hero.role } } do |form| %>
+              <%= hidden_field_tag :catalog_team, @selected_team, id: nil %>
+              <%= form.hidden_field :hero_id, value: hero.id, id: nil %>
+              <%= form.hidden_field :team, value: @selected_team, id: nil %>
+              <%= button_tag type: "submit", class: "hero-option", disabled: selected || team_full, aria: { label: "Добавить #{hero.name}" } do %>
+                <%= render "shared/ui/hero_identity", name: hero.name, role: hero.role %>
+                <span class="hero-choice"><%= selected ? "Уже выбран" : (team_full ? "Нет мест" : "Добавить") %></span>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+        <p class="empty-state" role="status" data-hero-search-target="noResults" hidden>Ничего не найдено. Попробуй другое имя или роль.</p>
+      <% end %>
+    </section>
+
+    <section id="recommendations" aria-labelledby="recommendations-title">
+      <div class="draft-section-heading"><h2 id="recommendations-title">Рекомендации</h2></div>
+      <p class="recommendation-note">Учебная эвристика по характеристикам героев. Балл — не вероятность победы. После каждого изменения состав оценивается заново.</p>
+      <% if @picks.count { |pick| pick.team == "ally" } == 5 %>
+        <div class="empty-state" role="status"><h3>Команда собрана</h3><p>Все пять союзников выбраны. Удали героя, чтобы снова увидеть рекомендации.</p></div>
+      <% elsif @recommendations.empty? %>
+        <div class="empty-state"><h3>Нет доступных рекомендаций</h3><p>В каталоге не осталось свободных героев.</p></div>
+      <% else %>
+        <ol class="recommendation-list">
+          <% @recommendations.each do |item| %>
+            <li class="recommendation" data-hero-id="<%= item[:hero].id %>">
+              <div class="recommendation-heading">
+                <div class="recommendation-identity">
+                  <%= render "shared/ui/hero_portrait", name: item[:hero].name %>
+                  <div><h3><%= item[:hero].name %></h3><p class="component-meta"><%= item[:hero].role %></p></div>
+                </div>
+                <span><%= item[:score] %> балл.</span>
+              </div>
+              <ul class="recommendation-reasons"><% item[:reasons].each do |reason| %><li><%= reason %></li><% end %></ul>
+              <%= button_to "Добавить в мою команду", draft_draft_picks_path(@draft), class: "secondary",
+                params: { draft_pick: { hero_id: item[:hero].id, team: "ally" }, catalog_team: @selected_team } %>
+            </li>
+          <% end %>
+        </ol>
+      <% end %>
+    </section>
+  </div>
+</main>
