@@ -19,6 +19,7 @@ class SessionsController < ApplicationController
     end
 
     if user.authenticate(params[:password].to_s)
+      disconnect_live_connections
       reset_session
       session[:user_id] = user.id
       redirect_to root_path
@@ -32,7 +33,17 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    disconnect_live_connections
     reset_session
     redirect_to new_session_path, notice: "Вы вышли из аккаунта"
+  end
+
+  private
+
+  def disconnect_live_connections
+    return unless current_user
+
+    ActionCable.server.remote_connections.where(current_user: current_user, cable_session_id: session.id.to_s)
+      .disconnect(reconnect: false)
   end
 end

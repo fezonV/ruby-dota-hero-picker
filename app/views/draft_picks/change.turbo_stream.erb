@@ -1,0 +1,4 @@
+<%= turbo_stream.update dom_id(@draft, :feedback) do %>
+  <%= render "drafts/feedback" %>
+<% end %>
+<turbo-stream action="draft_changed" target="<%= dom_id(@draft, :editor) %>"></turbo-stream>

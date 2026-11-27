@@ -1,0 +1,7 @@
+<%= render "shared/flash" %>
+<% if @pick&.errors&.any? %>
+  <div class="feedback feedback-error" role="alert">
+    <h2>Не удалось добавить героя</h2>
+    <ul><% @pick.errors.full_messages.each do |message| %><li><%= message %></li><% end %></ul>
+  </div>
+<% end %>

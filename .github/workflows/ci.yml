@@ -139,6 +139,9 @@ jobs:
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
+          # Keep Chrome/CDP compatible with the locked Capybara version.
+          SE_BROWSER_VERSION: "142.0.7444.175"
+          SE_SKIP_DRIVER_IN_PATH: "true"
           # RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           # REDIS_URL: redis://localhost:6379/0
         run: bin/rails db:test:prepare test:system

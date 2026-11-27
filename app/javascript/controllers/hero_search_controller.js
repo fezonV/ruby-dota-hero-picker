@@ -7,7 +7,16 @@ export default class extends Controller {
     this.filter()
   }
 
+  searchTargetConnected() {
+    this.filter()
+  }
+
+  heroTargetConnected() {
+    this.filter()
+  }
+
   filter() {
+    if (!this.hasSearchTarget) return
     const query = this.searchTarget.value.trim().toLocaleLowerCase("ru")
     this.heroTargets.forEach((hero) => {
       hero.hidden = !`${hero.dataset.name} ${hero.dataset.role}`.toLocaleLowerCase("ru").includes(query)

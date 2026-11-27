@@ -137,9 +137,9 @@ class DraftsTest < ApplicationSystemTestCase
   private
 
   def resize_viewport(width, height)
-    page.current_window.resize_to(width, height)
-    viewport = page.evaluate_script("({ width: window.innerWidth, height: window.innerHeight })")
-    page.current_window.resize_to(width * 2 - viewport["width"], height * 2 - viewport["height"])
+    # Native windows can enforce a minimum width; set the CSS viewport directly.
+    page.driver.browser.execute_cdp("Emulation.setDeviceMetricsOverride",
+      width: width, height: height, deviceScaleFactor: 1, mobile: false)
     assert_equal [ width, height ], page.evaluate_script("[window.innerWidth, window.innerHeight]")
   end
 
